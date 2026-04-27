@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<title>Hyrox Beginner Plan — 4 Weeks No Equipment</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --orange:#FF4D00;--gold:#FFD700;--teal:#10B981;--blue:#00B4D8;
+  --bg:#0A0A0A;--surface:#111111;--surface2:#161616;
+  --border:rgba(255,255,255,0.08);--text:#F5F5F5;--muted:rgba(255,255,255,0.45);
+  --mono:'JetBrains Mono',monospace;--display:'Barlow Condensed',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{background:var(--bg);color:var(--text);font-family:var(--display);min-height:100vh;}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:repeating-linear-gradient(0deg,transparent,transparent 40px,rgba(255,77,0,0.03) 40px,rgba(255,77,0,0.03) 41px),
+  repeating-linear-gradient(90deg,transparent,transparent 40px,rgba(255,77,0,0.03) 40px,rgba(255,77,0,0.03) 41px);}
+#app{position:relative;z-index:1;max-width:480px;margin:0 auto;}
+
+.header{background:linear-gradient(135deg,#FF4D00 0%,#CC3D00 50%,#0A0A0A 100%);padding:28px 20px 22px;}
+.header-label{font-family:var(--mono);font-size:10px;letter-spacing:4px;color:rgba(255,255,255,0.55);margin-bottom:6px;}
+.header-title{font-size:clamp(30px,9vw,40px);font-weight:900;line-height:1;text-transform:uppercase;letter-spacing:-1px;}
+.header-title span{color:var(--gold);}
+.header-sub{font-family:var(--mono);font-size:11px;color:rgba(255,255,255,0.5);letter-spacing:2px;margin-top:8px;}
+.stats{display:flex;gap:20px;margin-top:16px;}
+.stat-num{font-size:22px;font-weight:900;color:var(--gold);line-height:1;}
+.stat-lbl{font-family:var(--mono);font-size:8px;color:rgba(255,255,255,0.45);letter-spacing:2px;}
+
+.tabs{display:flex;background:#111;border-bottom:1px solid var(--border);}
+.tab-btn{flex:1;padding:13px 4px;border:none;background:transparent;color:var(--muted);cursor:pointer;
+  font-family:var(--mono);font-size:10px;letter-spacing:2px;font-weight:700;text-transform:uppercase;
+  transition:all .2s;-webkit-appearance:none;}
+.tab-btn.active{background:var(--orange);color:#fff;}
+
+.plan-body{padding:16px;}
+.week-row{display:flex;gap:8px;margin-bottom:16px;}
+.week-btn{flex:1;padding:10px 4px;border:2px solid rgba(255,255,255,0.1);background:transparent;color:#fff;
+  cursor:pointer;border-radius:5px;text-align:center;transition:all .2s;-webkit-appearance:none;}
+.week-btn.active{border-color:var(--orange);background:rgba(255,77,0,0.15);}
+.week-num{font-size:18px;font-weight:900;}
+.week-lbl{font-family:var(--mono);font-size:8px;color:var(--muted);letter-spacing:1px;}
+.week-info{background:var(--surface2);border:1px solid rgba(255,77,0,0.3);border-left:4px solid var(--orange);
+  border-radius:6px;padding:12px 14px;margin-bottom:14px;}
+.week-info-tag{font-family:var(--mono);font-size:10px;color:var(--orange);letter-spacing:3px;margin-bottom:3px;}
+.week-info-text{font-family:var(--mono);font-size:12px;color:rgba(255,255,255,0.65);}
+.day-row{display:flex;gap:6px;margin-bottom:16px;overflow-x:auto;padding-bottom:4px;}
+.day-row::-webkit-scrollbar{height:2px;}
+.day-row::-webkit-scrollbar-thumb{background:var(--orange);}
+.day-btn{flex-shrink:0;width:46px;height:54px;border:2px solid rgba(255,255,255,0.1);background:transparent;
+  color:#fff;cursor:pointer;border-radius:6px;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:2px;transition:all .2s;-webkit-appearance:none;}
+.day-emoji{font-size:16px;}
+.day-lbl{font-family:var(--mono);font-size:8px;color:var(--muted);}
+.day-header{border-radius:8px;padding:14px 16px;margin-bottom:12px;display:flex;align-items:center;gap:12px;}
+.day-header-emoji{font-size:32px;}
+.day-header-tag{font-family:var(--mono);font-size:10px;letter-spacing:3px;margin-bottom:2px;}
+.day-header-title{font-size:18px;font-weight:900;letter-spacing:1px;text-transform:uppercase;}
+.block{background:var(--surface);border:1px solid var(--border);border-radius:6px;margin-bottom:10px;overflow:hidden;}
+.block-head{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;
+  background:rgba(255,255,255,0.03);border-bottom:1px solid rgba(255,255,255,0.04);}
+.block-label{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:2px;}
+.block-time-badge{font-family:var(--mono);font-size:10px;color:var(--muted);background:rgba(255,255,255,0.05);
+  padding:2px 8px;border-radius:20px;}
+.block-body{padding:10px 14px;}
+.ex-row{display:flex;gap:10px;align-items:flex-start;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.04);}
+.ex-row:last-child{border-bottom:none;}
+.ex-arr{font-size:10px;margin-top:3px;flex-shrink:0;}
+.ex-txt{font-family:var(--mono);font-size:12px;color:rgba(255,255,255,0.82);line-height:1.4;}
+
+.timer-btn{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:10px;
+  padding:10px 14px;border-radius:6px;cursor:pointer;font-family:var(--mono);font-size:11px;
+  font-weight:700;letter-spacing:2px;text-transform:uppercase;width:100%;
+  transition:all .15s;-webkit-appearance:none;}
+.timer-btn:active{transform:scale(0.97);}
+
+/* ─── TIMER OVERLAY ─── */
+.t-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.93);z-index:999;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;}
+.t-overlay.hidden{display:none!important;}
+.t-modal{background:#131313;border:1px solid rgba(255,255,255,0.1);border-radius:18px;
+  padding:22px 20px 24px;width:100%;max-width:340px;text-align:center;}
+.t-phase-top{font-family:var(--mono);font-size:10px;letter-spacing:4px;margin-bottom:4px;}
+.t-exname{font-size:19px;font-weight:900;text-transform:uppercase;letter-spacing:1px;
+  margin-bottom:18px;line-height:1.2;color:#fff;}
+
+.t-ring-wrap{position:relative;width:190px;height:190px;margin:0 auto 16px;}
+.t-ring-wrap svg{transform:rotate(-90deg);}
+.r-bg{fill:none;stroke:rgba(255,255,255,0.07);stroke-width:12;}
+.r-fg{fill:none;stroke-width:12;stroke-linecap:round;transition:stroke-dashoffset .9s linear,stroke .4s;}
+.t-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.t-digits{font-size:54px;font-weight:900;line-height:1;letter-spacing:-3px;}
+.t-phase-lbl{font-family:var(--mono);font-size:9px;letter-spacing:3px;margin-top:5px;}
+
+.t-sets{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:2px;margin-bottom:4px;}
+.t-log{font-family:var(--mono);font-size:10px;color:rgba(255,255,255,0.3);min-height:16px;margin-bottom:14px;}
+
+.t-ctrls{display:flex;gap:10px;}
+.t-btn{flex:1;padding:13px;border:none;border-radius:9px;cursor:pointer;font-family:var(--mono);
+  font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;transition:all .15s;-webkit-appearance:none;}
+.t-btn:active{transform:scale(0.96);}
+.t-main{background:var(--orange);color:#fff;}
+.t-close{background:rgba(255,255,255,0.07);color:var(--muted);}
+
+.stations-body{padding:16px;}
+.stn-lbl{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:3px;margin-bottom:16px;}
+.stn-card{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--orange);
+  border-radius:8px;padding:14px;margin-bottom:10px;display:flex;gap:12px;align-items:flex-start;}
+.stn-num{width:32px;height:32px;background:var(--orange);border-radius:4px;display:flex;
+  align-items:center;justify-content:center;font-size:14px;font-weight:900;flex-shrink:0;color:#fff;}
+.stn-name{font-size:16px;font-weight:900;letter-spacing:1px;text-transform:uppercase;}
+.stn-sub{font-family:var(--mono);font-size:10px;color:var(--orange);letter-spacing:2px;margin:4px 0 6px;}
+.stn-tip{font-family:var(--mono);font-size:11px;color:rgba(255,255,255,0.55);line-height:1.5;}
+
+.tips-body{padding:16px;}
+.tip-card{background:var(--surface);border-radius:8px;padding:16px;margin-bottom:14px;}
+.tip-hd{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.tip-ico{font-size:22px;}
+.tip-ttl{font-size:15px;font-weight:900;letter-spacing:3px;font-family:var(--mono);}
+.tip-row{display:flex;gap:10px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.05);}
+.tip-row:last-child{border-bottom:none;}
+.tip-arr{flex-shrink:0;margin-top:2px;font-size:11px;}
+.tip-txt{font-family:var(--mono);font-size:12px;color:rgba(255,255,255,0.72);line-height:1.5;}
+.hyrox-box{background:linear-gradient(135deg,rgba(255,77,0,0.12),rgba(255,215,0,0.06));
+  border:1px solid rgba(255,77,0,0.4);border-radius:8px;padding:16px;}
+.hyrox-box-ttl{font-size:14px;font-weight:900;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;}
+.hyrox-box-txt{font-family:var(--mono);font-size:11px;color:rgba(255,255,255,0.65);line-height:1.8;}
+
+.footer{padding:16px 16px 36px;text-align:center;}
+.ft{font-family:var(--mono);font-size:9px;color:rgba(255,255,255,0.15);letter-spacing:3px;}
+.hidden{display:none!important;}
+
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
+.pulsing .r-fg{animation:pulse 1s ease-in-out infinite;}
+@keyframes bgflash{0%,100%{background:#131313;}50%{background:rgba(255,77,0,0.15);}}
+.flash{animation:bgflash .4s ease;}
+</style>
+</head>
+<body>
+<div id="app">
+
+<div class="header">
+  <div class="header-label">HYROX × BEGINNER PROGRAM</div>
+  <div class="header-title">NO EQUIPMENT<br><span>4-WEEK PLAN</span></div>
+  <div class="header-sub">BUILD YOUR BASE. RACE READY IN 4 WEEKS.</div>
+  <div class="stats">
+    <div><div class="stat-num">4</div><div class="stat-lbl">WEEKS</div></div>
+    <div><div class="stat-num">28</div><div class="stat-lbl">SESSIONS</div></div>
+    <div><div class="stat-num">0</div><div class="stat-lbl">EQUIPMENT</div></div>
+    <div><div class="stat-num">~45</div><div class="stat-lbl">MIN/DAY</div></div>
+  </div>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('plan')">📅 PLAN</button>
+  <button class="tab-btn" onclick="switchTab('stations')">🏋️ STATIONS</button>
+  <button class="tab-btn" onclick="switchTab('tips')">💡 TIPS</button>
+</div>
+
+<div id="tab-plan" class="plan-body">
+  <div class="week-row" id="weekRow"></div>
+  <div class="week-info" id="weekInfo"></div>
+  <div class="day-row" id="dayRow"></div>
+  <div id="dayContent"></div>
+</div>
+
+<div id="tab-stations" class="stations-body hidden">
+  <div class="stn-lbl">8 HYROX STATIONS — BODYWEIGHT VERSION</div>
+  <div id="stnList"></div>
+</div>
+
+<div id="tab-tips" class="tips-body hidden">
+  <div id="tipsList"></div>
+  <div class="hyrox-box">
+    <div class="hyrox-box-ttl">🏆 What IS Hyrox?</div>
+    <div class="hyrox-box-txt">Hyrox is a global fitness race for everybody. You run 1km, complete a functional workout station, then repeat — 8 times total (8km running + 8 stations). This plan builds your base so you can finish strong. Next step after 4 weeks: add weight!</div>
+  </div>
+</div>
+
+<div class="footer"><div class="ft">BUILT FOR HYROX BEGINNERS · NO EXCUSES · NO EQUIPMENT</div></div>
+</div>
+
+<!-- TIMER OVERLAY -->
+<div class="t-overlay hidden" id="tOverlay">
+  <div class="t-modal" id="tModal">
+    <div class="t-phase-top" id="tPhaseTop" style="color:#FF4D00">GET READY</div>
+    <div class="t-exname" id="tExName">Exercise</div>
+
+    <div class="t-ring-wrap" id="tRingWrap">
+      <svg width="190" height="190" viewBox="0 0 190 190">
+        <circle class="r-bg" cx="95" cy="95" r="82"/>
+        <circle class="r-fg" id="rFg" cx="95" cy="95" r="82"
+          stroke="#FF4D00" stroke-dasharray="515.2" stroke-dashoffset="0"/>
+      </svg>
+      <div class="t-center">
+        <div class="t-digits" id="tDigits">—</div>
+        <div class="t-phase-lbl" id="tPhaseLbl" style="color:#FF4D00">READY</div>
+      </div>
+    </div>
+
+    <div class="t-sets" id="tSets"></div>
+    <div class="t-log" id="tLog">Tap START to begin your timer</div>
+
+    <div class="t-ctrls">
+      <button class="t-btn t-close" onclick="closeTimer()">✕ CLOSE</button>
+      <button class="t-btn t-main" id="tMainBtn" onclick="handleCtrl()">▶ START</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ══════════════════════════════════════════
+   DATA
+══════════════════════════════════════════ */
+const WEEKS=[
+ {week:1,theme:"Foundation",focus:"Build base endurance & movement patterns",days:[
+  {day:"Monday",type:"RUN + STRENGTH",badge:"🏃",color:"#FF4D00",blocks:[
+   {label:"Warm-Up",dur:"5 min",secs:300,exercises:["High knees 30s","Arm circles 30s","Hip rotations 30s","Leg swings 30s"]},
+   {label:"Run",dur:"20 min",secs:1200,exercises:["Easy jog — conversational pace","Target: 3–4 km"]},
+   {label:"Strength Circuit",dur:"15 min",secs:900,sets:3,rest:60,exercises:["Bodyweight squats 3×15","Push-ups 3×10","Plank hold 3×30s","Glute bridges 3×15"]},
+   {label:"Cool-Down",dur:"5 min",secs:300,exercises:["Walk 3 min","Full-body stretch"]}
+  ]},
+  {day:"Tuesday",type:"ACTIVE RECOVERY",badge:"🧘",color:"#00B4D8",blocks:[
+   {label:"Mobility Flow",dur:"30 min",secs:1800,exercises:["Cat-cow 2 min","Hip flexor stretch 2×45s each","Thoracic rotations 2 min","Pigeon pose 2×60s each","Child's pose 2 min"]}
+  ]},
+  {day:"Wednesday",type:"HYROX SIMULATION",badge:"⚡",color:"#FFD700",blocks:[
+   {label:"Warm-Up",dur:"5 min",secs:300,exercises:["Jumping jacks 60s","Dynamic lunges 60s","Inchworms 60s"]},
+   {label:"Run 1",dur:"5 min",secs:300,exercises:["Run 500m easy pace"]},
+   {label:"Station 1",dur:"2 min",secs:120,exercises:["Burpee broad jumps ×10"]},
+   {label:"Run 2",dur:"5 min",secs:300,exercises:["Run 500m"]},
+   {label:"Station 2",dur:"2 min",secs:120,exercises:["Walking lunges ×20 (10 each leg)"]},
+   {label:"Run 3",dur:"5 min",secs:300,exercises:["Run 500m"]},
+   {label:"Station 3",dur:"2 min",secs:120,exercises:["Mountain climbers ×30"]},
+   {label:"Cool-Down",dur:"5 min",secs:300,exercises:["Walk + stretch"]}
+  ]},
+  {day:"Thursday",type:"REST",badge:"💤",color:"#6B7280",blocks:[
+   {label:"Full Rest",dur:"All day",secs:0,exercises:["Prioritize sleep 7–9 hrs","Light walking optional","Hydrate well"]}
+  ]},
+  {day:"Friday",type:"STRENGTH + CORE",badge:"💪",color:"#FF4D00",blocks:[
+   {label:"Warm-Up",dur:"5 min",secs:300,exercises:["Jump rope (imaginary) 2 min","Hip circles","Shoulder warm-up"]},
+   {label:"Lower Body",dur:"15 min",secs:900,sets:3,rest:45,exercises:["Jump squats 3×12","Reverse lunges 3×12 each","Wall sit 3×45s"]},
+   {label:"Core Blast",dur:"12 min",secs:720,sets:3,rest:45,exercises:["Dead bugs 3×12","Bicycle crunches 3×20","Side plank 3×30s each","V-ups 3×10"]}
+  ]},
+  {day:"Saturday",type:"LONG RUN",badge:"🏃",color:"#10B981",blocks:[
+   {label:"Easy Long Run",dur:"35–40 min",secs:2100,exercises:["Conversational pace","Target: 5–6 km","Walk breaks allowed"]}
+  ]},
+  {day:"Sunday",type:"REST",badge:"💤",color:"#6B7280",blocks:[
+   {label:"Full Rest",dur:"All day",secs:0,exercises:["Recovery focus","Light stretching","Mental prep for Week 2"]}
+  ]}
+ ]},
+ {week:2,theme:"Endurance",focus:"Increase run volume & station intensity",days:[
+  {day:"Monday",type:"RUN + STRENGTH",badge:"🏃",color:"#FF4D00",blocks:[
+   {label:"Run",dur:"25 min",secs:1500,exercises:["Easy jog — 4–5 km","Include 2× 1-min pick-ups"]},
+   {label:"Strength",dur:"20 min",secs:1200,sets:3,rest:60,exercises:["Bulgarian split squat 3×10 each","Diamond push-ups 3×10","Plank to downdog 3×12","Single-leg glute bridge 3×12 each"]}
+  ]},
+  {day:"Tuesday",type:"ACTIVE RECOVERY",badge:"🧘",color:"#00B4D8",blocks:[
+   {label:"Yoga / Mobility",dur:"30 min",secs:1800,exercises:["Sun salutations ×5","Warrior sequence","Seated hamstring stretch","Spinal twist"]}
+  ]},
+  {day:"Wednesday",type:"HYROX SIMULATION",badge:"⚡",color:"#FFD700",blocks:[
+   {label:"Warm-Up",dur:"5 min",secs:300,exercises:["Full body activation"]},
+   {label:"Circuit ×3 Rounds",dur:"25 min",secs:1500,sets:3,rest:90,exercises:["Run 600m","Burpee broad jumps ×10","Squat jumps ×15","Mountain climbers ×20","Walking lunges ×20","Push-ups ×12","Rest 90s between rounds"]},
+   {label:"Cool-Down",dur:"5 min",secs:300,exercises:["Stretch & breathe"]}
+  ]},
+  {day:"Thursday",type:"REST",badge:"💤",color:"#6B7280",blocks:[{label:"Rest",dur:"All day",secs:0,exercises:["Recovery","Nutrition focus"]}]},
+  {day:"Friday",type:"STRENGTH + CORE",badge:"💪",color:"#FF4D00",blocks:[
+   {label:"Power Work",dur:"15 min",secs:900,sets:3,rest:45,exercises:["Box jumps (use step) 3×10","Explosive push-ups 3×8","Broad jumps 3×8"]},
+   {label:"Core",dur:"15 min",secs:900,sets:3,rest:45,exercises:["Hollow body hold 3×30s","Plank variations 3×45s","Russian twists 3×20","Flutter kicks 3×30s"]}
+  ]},
+  {day:"Saturday",type:"LONG RUN",badge:"🏃",color:"#10B981",blocks:[
+   {label:"Long Run",dur:"45 min",secs:2700,exercises:["Target 6–7 km","Steady easy pace","No walk breaks if possible"]}
+  ]},
+  {day:"Sunday",type:"REST",badge:"💤",color:"#6B7280",blocks:[{label:"Rest",dur:"All day",secs:0,exercises:["Full recovery","Plan Week 3"]}]}
+ ]},
+ {week:3,theme:"Intensity",focus:"Introduce intervals & race-pace effort",days:[
+  {day:"Monday",type:"INTERVALS",badge:"⚡",color:"#FF4D00",blocks:[
+   {label:"Interval Run",dur:"30 min",secs:1800,sets:6,rest:90,exercises:["Warm-up jog 5 min","6× 400m at hard effort","90s walk/jog recovery between","Cool-down jog 5 min"]}
+  ]},
+  {day:"Tuesday",type:"ACTIVE RECOVERY",badge:"🧘",color:"#00B4D8",blocks:[
+   {label:"Mobility",dur:"30 min",secs:1800,exercises:["Full body mobility flow","Focus on hips & ankles"]}
+  ]},
+  {day:"Wednesday",type:"HYROX SIMULATION",badge:"⚡",color:"#FFD700",blocks:[
+   {label:"Race Sim ×4 Rounds",dur:"35 min",secs:2100,sets:4,rest:120,exercises:["Run 500m at race effort","Burpee broad jumps ×10","Wall sit ×60s","Push-ups ×15","Mountain climbers ×25","Rest 2 min between rounds"]}
+  ]},
+  {day:"Thursday",type:"REST",badge:"💤",color:"#6B7280",blocks:[{label:"Rest",dur:"All day",secs:0,exercises:["Full recovery"]}]},
+  {day:"Friday",type:"STRENGTH + CORE",badge:"💪",color:"#FF4D00",blocks:[
+   {label:"Strength",dur:"20 min",secs:1200,sets:3,rest:60,exercises:["Plyometric lunges 3×12 each","Pike push-ups 3×10","Single-leg deadlift 3×10 each","Jump squats 3×15"]},
+   {label:"Core",dur:"15 min",secs:900,sets:3,rest:45,exercises:["Ab wheel rollouts (from knees) 3×10","Side plank with hip dip 3×12 each","Dead bugs 3×15"]}
+  ]},
+  {day:"Saturday",type:"LONG RUN",badge:"🏃",color:"#10B981",blocks:[
+   {label:"Long Run",dur:"50–55 min",secs:3150,exercises:["Target 7–9 km","Last 10 min at slightly faster pace"]}
+  ]},
+  {day:"Sunday",type:"REST",badge:"💤",color:"#6B7280",blocks:[{label:"Rest",dur:"All day",secs:0,exercises:["Recovery priority"]}]}
+ ]},
+ {week:4,theme:"Peak & Test",focus:"Consolidate fitness & mini race simulation",days:[
+  {day:"Monday",type:"RUN + STRENGTH",badge:"🏃",color:"#FF4D00",blocks:[
+   {label:"Tempo Run",dur:"30 min",secs:1800,exercises:["5 min easy","20 min at comfortably hard pace","5 min easy"]},
+   {label:"Strength",dur:"20 min",secs:1200,exercises:["All previous exercises","Push to max reps with good form"]}
+  ]},
+  {day:"Tuesday",type:"ACTIVE RECOVERY",badge:"🧘",color:"#00B4D8",blocks:[
+   {label:"Mobility",dur:"30 min",secs:1800,exercises:["Full body maintenance","Extra hip work"]}
+  ]},
+  {day:"Wednesday",type:"MINI HYROX RACE 🏆",badge:"🏆",color:"#FFD700",blocks:[
+   {label:"Full Simulation",dur:"~45–60 min",secs:3300,exercises:["8× (Run 500m + 1 station)","S1: Burpee broad jumps ×10","S2: Walking lunges ×20","S3: Mountain climbers ×30","S4: Squat jumps ×15","S5: Push-ups ×15","S6: Plank hold ×60s","S7: Bear crawl (10m ×3)","S8: Burpees ×10","⏱️ TIME YOURSELF — your first baseline!"]}
+  ]},
+  {day:"Thursday",type:"REST",badge:"💤",color:"#6B7280",blocks:[{label:"Rest",dur:"All day",secs:0,exercises:["Celebrate Week 4!","Recovery nutrition"]}]},
+  {day:"Friday",type:"LIGHT MOVEMENT",badge:"🚶",color:"#10B981",blocks:[
+   {label:"Easy Day",dur:"30 min",secs:1800,exercises:["30 min easy walk or jog","Reflect on 4 weeks of progress"]}
+  ]},
+  {day:"Saturday",type:"LONG RUN",badge:"🏃",color:"#10B981",blocks:[
+   {label:"Final Long Run",dur:"55–60 min",secs:3450,exercises:["Target 8–10 km","Enjoy it — you've earned this!"]}
+  ]},
+  {day:"Sunday",type:"REST & REFLECT",badge:"🎉",color:"#10B981",blocks:[
+   {label:"Rest & Reflect",dur:"All day",secs:0,exercises:["Review your progress","Set goals for next 4 weeks","You're no longer a beginner! 🎉"]}
+  ]}
+ ]}
+];
+
+const STATIONS=[
+ {name:"Burpee Broad Jump",sub:"Full body power",tip:"Jump forward as far as possible. Land soft, knees bent."},
+ {name:"Walking Lunges",sub:"Leg endurance",tip:"Keep torso upright. Drive through front heel. Control the descent."},
+ {name:"Mountain Climbers",sub:"Core + cardio",tip:"Hips level with shoulders. Drive knees to chest fast but controlled."},
+ {name:"Squat Jumps",sub:"Leg power",tip:"Arms swing for momentum. Land quietly — absorb impact through your legs."},
+ {name:"Push-Ups",sub:"Upper body",tip:"Full range of motion. Modify on knees if needed. Chest to floor."},
+ {name:"Plank Hold",sub:"Core stability",tip:"Straight line from head to heels. Breathe. Don't let hips sag."},
+ {name:"Bear Crawl",sub:"Full body coordination",tip:"Knees hover 2cm off ground. Opposite arm + leg move together."},
+ {name:"Burpees",sub:"Conditioning",tip:"Step out if needed. Focus on consistent reps over speed."}
+];
+
+const TIPS=[
+ {icon:"🥗",title:"NUTRITION",color:"#10B981",items:["Eat within 30 min post-workout","Prioritize protein: aim for 1.6g per kg bodyweight","Carbs before long runs for fuel","Stay hydrated: minimum 2L/day"]},
+ {icon:"😴",title:"RECOVERY",color:"#00B4D8",items:["7–9 hours of sleep is non-negotiable","Cold water rinse post-workout helps","Listen to your body — skip if injured, not just tired","Foam roll if available; massage if not"]},
+ {icon:"📈",title:"PROGRESSION",color:"#FFD700",items:["Track your mini-race time on Wed Week 4","If a workout feels too easy, add reps — not speed","Consistency > intensity as a beginner","Increase run distance by max 10%/week"]},
+ {icon:"🧠",title:"RACE MINDSET",color:"#FF4D00",items:["Hyrox is about pacing, not sprinting","Run conservatively between stations","Breathe before each station — don't rush in","Smile — you chose to be here!"]}
+];
+
+/* ══════════════════════════════════════════
+   SPEECH ENGINE
+══════════════════════════════════════════ */
+const CIRC = 2 * Math.PI * 82; // 515.2
+
+function say(text, rate=1, pitch=1.05){
+  if(!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.rate = rate; u.pitch = pitch; u.volume = 1;
+  const voices = window.speechSynthesis.getVoices();
+  const v = voices.find(x=>x.lang.startsWith('en-') && /female|samantha|karen|victoria|zira/i.test(x.name))
+         || voices.find(x=>x.lang.startsWith('en'))
+         || voices[0];
+  if(v) u.voice = v;
+  window.speechSynthesis.speak(u);
+}
+if(window.speechSynthesis){
+  window.speechSynthesis.getVoices();
+  window.speechSynthesis.onvoiceschanged = ()=> window.speechSynthesis.getVoices();
+}
+
+/* ══════════════════════════════════════════
+   TIMER ENGINE
+══════════════════════════════════════════ */
+let T = {
+  interval:null, running:false, paused:false,
+  phase:'idle', // idle|prep|work|rest|done
+  secs:0, remaining:0,
+  sets:1, curSet:1, rest:30,
+  color:'#FF4D00', name:''
+};
+
+const el = id => document.getElementById(id);
+
+function fmtTime(s){
+  const m=Math.floor(s/60), sc=s%60;
+  return m > 0 ? `${m}:${sc.toString().padStart(2,'0')}` : `${sc}`;
+}
+
+function setRing(ratio, color){
+  el('rFg').style.strokeDashoffset = CIRC * (1 - Math.max(0,Math.min(1,ratio)));
+  if(color) el('rFg').style.stroke = color;
+}
+
+function uiPhase(label, color){
+  el('tPhaseTop').textContent = label; el('tPhaseTop').style.color = color;
+  el('tPhaseLbl').textContent = label; el('tPhaseLbl').style.color = color;
+}
+
+function uiDigits(s){ el('tDigits').textContent = fmtTime(s); }
+function uiLog(t){ el('tLog').textContent = t; }
+function uiSets(){
+  el('tSets').textContent = T.sets > 1 ? `SET ${T.curSet} OF ${T.sets}` : '';
+}
+function uiBtn(txt){ el('tMainBtn').textContent = txt; }
+
+function flashModal(){
+  const m = el('tModal');
+  m.classList.remove('flash');
+  void m.offsetWidth;
+  m.classList.add('flash');
+}
+
+/* open */
+function openTimer(wi, di, bi){
+  const d = WEEKS[wi].days[di];
+  const b = d.blocks[bi];
+  if(!b.secs) return;
+  T = {
+    interval:null, running:false, paused:false, phase:'idle',
+    secs: b.secs, remaining: b.secs,
+    sets: b.sets || 1, curSet: 1, rest: b.rest || 30,
+    color: d.color, name: b.label
+  };
+  el('tExName').textContent = b.label;
+  el('tOverlay').classList.remove('hidden');
+  el('tRingWrap').classList.remove('pulsing');
+  setRing(1, T.color);
+  uiDigits(T.secs);
+  uiPhase('READY', T.color);
+  uiSets();
+  uiLog('Tap START to begin your timer');
+  uiBtn('▶ START');
+}
+
+function closeTimer(){
+  clearInterval(T.interval);
+  if(window.speechSynthesis) window.speechSynthesis.cancel();
+  el('tOverlay').classList.add('hidden');
+  el('tRingWrap').classList.remove('pulsing');
+  T.running = false; T.paused = false; T.phase = 'idle';
+}
+
+function handleCtrl(){
+  if(T.phase === 'done'){ closeTimer(); return; }
+  if(!T.running){ startTimer(); return; }
+  if(T.paused){ resumeTimer(); } else { pauseTimer(); }
+}
+
+function startTimer(){
+  T.running = true; T.paused = false;
+  beginPrep();
+}
+
+function beginPrep(){
+  clearInterval(T.interval);
+  T.phase = 'prep';
+  let prep = 3;
+  el('tRingWrap').classList.add('pulsing');
+  setRing(1, '#FFD700');
+  uiPhase('GET READY', '#FFD700');
+  uiDigits(prep);
+  uiLog('Prepare yourself...');
+  uiBtn('⏸ PAUSE');
+  say('Get ready!', 1, 1.1);
+
+  T.interval = setInterval(()=>{
+    if(T.paused) return;
+    prep--;
+    uiDigits(prep);
+    setRing(prep/3, '#FFD700');
+    if(prep === 2) say('Two');
+    if(prep === 1) say('One');
+    if(prep <= 0){
+      clearInterval(T.interval);
+      el('tRingWrap').classList.remove('pulsing');
+      beginWork();
+    }
+  }, 1000);
+}
+
+function beginWork(){
+  T.phase = 'work';
+  T.remaining = T.secs;
+  const total = T.secs;
+  setRing(1, T.color);
+  uiDigits(T.remaining);
+  uiPhase('GO!', T.color);
+  uiSets();
+  uiLog('');
+  flashModal();
+  say('Go! Start now!', 1, 1.1);
+
+  T.interval = setInterval(()=>{
+    if(T.paused) return;
+    T.remaining--;
+    setRing(T.remaining / total, T.color);
+    uiDigits(T.remaining);
+
+    const half = Math.floor(total / 2);
+    if(T.remaining === half)  say("Halfway there, keep pushing!", 1, 1);
+    if(T.remaining === 10)    say("10 seconds left!", 1.1, 1.1);
+    if(T.remaining === 5)     say("5");
+    if(T.remaining === 4)     say("4");
+    if(T.remaining === 3)     say("3");
+    if(T.remaining === 2)     say("2");
+    if(T.remaining === 1)     say("1");
+    if(T.remaining <= 0){
+      clearInterval(T.interval);
+      onWorkEnd();
+    }
+  }, 1000);
+}
+
+function onWorkEnd(){
+  flashModal();
+  if(T.curSet < T.sets){
+    beginRest();
+  } else {
+    finishAll();
+  }
+}
+
+function beginRest(){
+  T.phase = 'rest';
+  const restTotal = T.rest;
+  let restLeft = restTotal;
+  setRing(1, '#00B4D8');
+  uiDigits(restLeft);
+  uiPhase('REST', '#00B4D8');
+  uiLog(`Set ${T.curSet} complete! Rest up.`);
+  say(`Stop! Rest. Set ${T.curSet} complete. Next set in ${restTotal} seconds.`, 0.95, 1);
+
+  T.interval = setInterval(()=>{
+    if(T.paused) return;
+    restLeft--;
+    setRing(restLeft / restTotal, '#00B4D8');
+    uiDigits(restLeft);
+    if(restLeft === 5) say("Get ready for the next set!", 1, 1.1);
+    if(restLeft <= 0){
+      clearInterval(T.interval);
+      T.curSet++;
+      uiSets();
+      beginPrep();
+    }
+  }, 1000);
+}
+
+function finishAll(){
+  T.phase = 'done';
+  T.running = false;
+  el('tRingWrap').classList.add('pulsing');
+  setRing(1, '#10B981');
+  uiDigits(0);
+  uiPhase('DONE! 🎉', '#10B981');
+  uiLog('Block complete! Excellent work!');
+  uiBtn('✓ CLOSE');
+  say('Stop! Amazing work. Block complete! Take a breath and recover.', 0.92, 1.05);
+}
+
+function pauseTimer(){
+  T.paused = true;
+  uiBtn('▶ RESUME');
+  uiLog('Paused — tap Resume when ready');
+  if(window.speechSynthesis) window.speechSynthesis.cancel();
+  say('Paused.', 1, 1);
+}
+
+function resumeTimer(){
+  T.paused = false;
+  uiBtn('⏸ PAUSE');
+  uiLog('');
+  say('Resuming!', 1, 1.1);
+}
+
+/* ══════════════════════════════════════════
+   RENDER
+══════════════════════════════════════════ */
+let aW = 0, aD = 0;
+
+function switchTab(tab){
+  ['plan','stations','tips'].forEach(t=>{
+    el('tab-'+t).classList.toggle('hidden', t !== tab);
+  });
+  document.querySelectorAll('.tab-btn').forEach((b,i)=>{
+    b.classList.toggle('active', ['plan','stations','tips'][i] === tab);
+  });
+}
+
+function renderWeeks(){
+  el('weekRow').innerHTML = WEEKS.map((w,i)=>`
+    <button class="week-btn ${i===aW?'active':''}" onclick="selWeek(${i})">
+      <div class="week-num">W${w.week}</div>
+      <div class="week-lbl">${w.theme.toUpperCase()}</div>
+    </button>`).join('');
+  el('weekInfo').innerHTML=`
+    <div class="week-info-tag">WEEK ${WEEKS[aW].week} — ${WEEKS[aW].theme.toUpperCase()}</div>
+    <div class="week-info-text">${WEEKS[aW].focus}</div>`;
+}
+
+function renderDays(){
+  const days = WEEKS[aW].days;
+  el('dayRow').innerHTML = days.map((d,i)=>`
+    <button class="day-btn"
+      style="border-color:${i===aD?d.color:'rgba(255,255,255,0.1)'};background:${i===aD?d.color+'22':'transparent'}"
+      onclick="selDay(${i})">
+      <span class="day-emoji">${d.badge}</span>
+      <span class="day-lbl">${d.day.slice(0,3).toUpperCase()}</span>
+    </button>`).join('');
+}
+
+function renderDay(){
+  const d = WEEKS[aW].days[aD];
+  const blocks = d.blocks.map((b,bi)=>{
+    const hasTimer = b.secs > 0;
+    const setsTag = b.sets ? ` · ${b.sets} SETS` : '';
+    const timerBtn = hasTimer ? `
+      <button class="timer-btn"
+        style="background:${d.color}18;color:${d.color};border:1px solid ${d.color}44"
+        onclick="openTimer(${aW},${aD},${bi})">
+        ⏱ START TIMER &nbsp;·&nbsp; ${b.dur}${setsTag}
+      </button>` : '';
+    return `
+    <div class="block">
+      <div class="block-head">
+        <span class="block-label" style="color:${d.color}">${b.label.toUpperCase()}</span>
+        <span class="block-time-badge">⏱ ${b.dur}</span>
+      </div>
+      <div class="block-body">
+        ${b.exercises.map(ex=>`
+        <div class="ex-row">
+          <span class="ex-arr" style="color:${d.color}">▸</span>
+          <span class="ex-txt">${ex}</span>
+        </div>`).join('')}
+        ${timerBtn}
+      </div>
+    </div>`;
+  }).join('');
+
+  el('dayContent').innerHTML = `
+    <div class="day-header"
+      style="background:linear-gradient(135deg,${d.color}28,transparent);border:1px solid ${d.color}55">
+      <span class="day-header-emoji">${d.badge}</span>
+      <div>
+        <div class="day-header-tag" style="color:${d.color}">${d.day.toUpperCase()}</div>
+        <div class="day-header-title">${d.type}</div>
+      </div>
+    </div>
+    ${blocks}`;
+}
+
+function renderStations(){
+  el('stnList').innerHTML = STATIONS.map((s,i)=>`
+    <div class="stn-card">
+      <div class="stn-num">${i+1}</div>
+      <div>
+        <div class="stn-name">${s.name}</div>
+        <div class="stn-sub">${s.sub}</div>
+        <div class="stn-tip">💡 ${s.tip}</div>
+      </div>
+    </div>`).join('');
+}
+
+function renderTips(){
+  el('tipsList').innerHTML = TIPS.map(t=>`
+    <div class="tip-card" style="border:1px solid ${t.color}33">
+      <div class="tip-hd">
+        <span class="tip-ico">${t.icon}</span>
+        <span class="tip-ttl" style="color:${t.color}">${t.title}</span>
+      </div>
+      ${t.items.map(item=>`
+      <div class="tip-row">
+        <span class="tip-arr" style="color:${t.color}">▸</span>
+        <span class="tip-txt">${item}</span>
+      </div>`).join('')}
+    </div>`).join('');
+}
+
+function selWeek(i){ aW=i; aD=0; renderWeeks(); renderDays(); renderDay(); }
+function selDay(i){ aD=i; renderDays(); renderDay(); }
+
+// INIT
+renderWeeks(); renderDays(); renderDay(); renderStations(); renderTips();
+</script>
+</body>
+</html>
